@@ -1,4 +1,4 @@
-package org.wit.VideoManagement.console.models
+package org.wit.videoManagement.console.models
 
 interface VideoStore {
 

@@ -1,5 +1,8 @@
-package org.wit.VideoManagement.console.models
+package org.wit.videoManagement.console.models
 
 data class VideoModel(var id: Long = 0,
-                      var title: String = "",
-                      var description: String = "")
+                      var channel: String = "",
+                      var video: String = "",
+                      var likedAbout: String = "",
+                      var starRating: Float = 0.0f,
+                      var tags: String = "")

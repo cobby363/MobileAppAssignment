@@ -1,69 +1,92 @@
-package org.wit.VideoManagement.console.controllers
+package org.wit.videoManagement.console.controllers
 
 import VideoMemStore
 import mu.KotlinLogging
-import org.wit.VideoManagement.console.models.VideoModel
-import org.wit.VideoManagement.console.views.VideoView
+import org.wit.videoManagement.console.models.VideoJSONStore
+import org.wit.videoManagement.console.models.VideoModel
+import org.wit.videoManagement.console.views.VideoView
 
-class PlacemarkController {
+class VideoController {
 
-    val placemarks = VideoMemStore()
-    val placemarkView = VideoView()
+    //val videos = VideoMemStore()
+    val videos = VideoJSONStore()
+    val videoView = VideoView()
     val logger = KotlinLogging.logger {}
 
     init {
-        logger.info { "Launching Placemark Console App" }
-        println("Placemark Kotlin App Version 1.0")
+        logger.info { "Launching VideoManagement Console App" }
+        println("VideoManagement Kotlin App")
+    }
+    fun start() {
+        var input: Int
+
+        do {
+            input = menu()
+            when (input) {
+                1 -> add()
+                2 -> update()
+                3 -> list()
+                4 -> search()
+                -99 -> dummyData()
+                -1 -> println("Exiting App")
+                else -> println("Invalid Option")
+            }
+            println()
+        } while (input != -1)
+        logger.info { "Shutting Down VideoManagement Console App" }
     }
 
-    fun menu() :Int { return placemarkView.menu() }
+
+    fun menu() :Int { return videoView.menu() }
 
     fun add(){
-        var aPlacemark = VideoModel()
+        var aVideo = VideoModel()
 
-        if (placemarkView.addPlacemarkData(aPlacemark))
-            placemarks.create(aPlacemark)
+        if (videoView.addVideoData(aVideo))
+            videos.create(aVideo)
         else
-            logger.info("Placemark Not Added")
+            logger.info("Video Not Added")
     }
 
+
+
     fun list() {
-        placemarkView.listPlacemarks(placemarks)
+        videoView.listVideos(videos)
     }
 
     fun update() {
 
-        placemarkView.listPlacemarks(placemarks)
-        var searchId = placemarkView.getId()
-        val aPlacemark = search(searchId)
+        videoView.listVideos(videos)
+        var searchId = videoView.getId()
+        val aVideo = search(searchId)
 
-        if(aPlacemark != null) {
-            if(placemarkView.updatePlacemarkData(aPlacemark)) {
-                placemarks.update(aPlacemark)
-                placemarkView.showPlacemark(aPlacemark)
-                logger.info("Placemark Updated : [ $aPlacemark ]")
+        if(aVideo != null) {
+            if(videoView.updateVideoData(aVideo)) {
+                videos.update(aVideo)
+                videoView.showVideo(aVideo)
+                logger.info("Video Updated : [ $aVideo ]")
             }
             else
-                logger.info("Placemark Not Updated")
+                logger.info("Video Not Updated")
         }
         else
-            println("Placemark Not Updated...")
+            println("Video Not Updated...")
     }
 
     fun search() {
-        val aPlacemark = search(placemarkView.getId())!!
-        placemarkView.showPlacemark(aPlacemark)
+        val aVideo = search(videoView.getId())!!
+        videoView.showVideo(aVideo)
     }
 
 
     fun search(id: Long) : VideoModel? {
-        var foundPlacemark = placemarks.findOne(id)
-        return foundPlacemark
+        var foundVideo = videos.findOne(id)
+        return foundVideo
     }
 
     fun dummyData() {
-        placemarks.create(VideoModel(title = "New York New York", description = "So Good They Named It Twice"))
-        placemarks.create(VideoModel(title= "Ring of Kerry", description = "Some place in the Kingdom"))
-        placemarks.create(VideoModel(title = "Waterford City", description = "You get great Blaas Here!!"))
+        videos.create(VideoModel(title = "New York New York", description = "So Good They Named It Twice"))
+        videos.create(VideoModel(title= "Ring of Kerry", description = "Some place in the Kingdom"))
+        videos.create(VideoModel(title = "Waterford City", description = "You get great Blaas Here!!"))
     }
 }

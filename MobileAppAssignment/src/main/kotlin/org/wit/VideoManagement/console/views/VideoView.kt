@@ -1,8 +1,9 @@
-package org.wit.VideoManagement.console.views
+package org.wit.videoManagement.console.views
 
 import VideoMemStore
-//import org.wit.VideoManagement.console.models.VideoMemStore
-import org.wit.VideoManagement.console.models.VideoModel
+import org.wit.videoManagement.console.models.VideoJSONStore
+//import org.wit.videoManagement.console.models.VideoMemStore
+import org.wit.videoManagement.console.models.VideoModel
 
 class VideoView {
 
@@ -12,10 +13,10 @@ class VideoView {
         var input: String?
 
         println("MAIN MENU")
-        println(" 1. Add Placemark")
-        println(" 2. Update Placemark")
-        println(" 3. List All Placemarks")
-        println(" 4. Search Placemarks")
+        println(" 1. Add Video")
+        println(" 2. Update Video")
+        println(" 3. List All Videos")
+        println(" 4. Search Videos")
         println("-1. Exit")
         println()
         print("Enter Option : ")
@@ -27,21 +28,21 @@ class VideoView {
         return option
     }
 
-    fun listPlacemarks(placemarks : VideoMemStore) {
-        println("List All Placemarks")
+    fun listVideos(videos : VideoJSONStore) {
+        println("List All Videos")
         println()
-        placemarks.logAll()
+        videos.logAll()
         println()
     }
 
-    fun showPlacemark(video : VideoModel) {
+    fun showVideo(video : VideoModel) {
         if(video != null)
-            println("Placemark Details [ $video ]")
+            println("Video Details [ $video ]")
         else
-            println("Placemark Not Found...")
+            println("Video Not Found...")
     }
 
-    fun addPlacemarkData(video : VideoModel) : Boolean {
+    fun addVideoData(video : VideoModel) : Boolean {
 
         println()
         print("Enter a Title : ")
@@ -52,7 +53,7 @@ class VideoView {
         return video.title.isNotEmpty() && video.description.isNotEmpty()
     }
 
-    fun updatePlacemarkData(video : VideoModel) : Boolean {
+    fun updateVideoData(video : VideoModel) : Boolean {
 
         var tempTitle: String?
         var tempDescription: String?
