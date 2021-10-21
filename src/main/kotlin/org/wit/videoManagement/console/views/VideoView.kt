@@ -1,0 +1,186 @@
+package org.wit.videoManagement.console.views
+
+import VideoMemStore
+import org.wit.videoManagement.console.models.VideoJSONStore
+//import org.wit.videoManagement.console.models.VideoMemStore
+import org.wit.videoManagement.console.models.VideoModel
+
+class VideoView {
+
+    fun menu() : Int {
+
+        var option : Int
+        var input: String?
+
+        println("MAIN MENU")
+        println(" 1. Add Video")
+        println(" 2. Update Video")
+        println(" 3. List All Videos")
+        println(" 4. Search Videos")
+        println("-1. Exit")
+        println()
+        print("Enter Option : ")
+        input = readLine()!!
+        option = if (input.toIntOrNull() != null && !input.isEmpty())
+            input.toInt()
+        else
+            -9
+        return option
+    }
+
+    fun listVideos(videos : VideoJSONStore) {
+        println("List All Videos")
+        println()
+        videos.logAll()
+        println()
+    }
+
+    fun showVideo(video : VideoModel) {
+        if(video != null)
+            println("Video Details [ $video ]")
+        else
+            println("Video Not Found...")
+    }
+
+    fun addVideoData(video : VideoModel) : Boolean {
+
+        println()
+        print("Enter a Channel Name : ")
+        video.channel = readLine()!!
+        print("Enter a Video Title : ")
+        video.videoTitle = readLine()!!
+        print("What star rating would you give this video (1-5 whole numbers)")
+        var tempStarRatingFloat = readLine()!!.toFloat()
+        var tempStarRating = tempStarRatingFloat.toInt()
+        var moveOn = false
+        while(!moveOn) {
+            if (tempStarRating < 1 || tempStarRating > 5) {
+                print("Please enter a whole number between 1 and 5")
+                tempStarRatingFloat = readLine()!!.toFloat()
+                tempStarRating = tempStarRatingFloat.toInt()
+            }else
+                moveOn = true
+        }
+        video.starRating = tempStarRating
+        val toPrint = "Which of these tags would suit your opinion of this video?: "
+        var tempTagFloat: Float
+        var tempTag: Int
+        moveOn = false
+        if(video.starRating==1 || video.starRating==2) {
+            print("$toPrint\n1: Misleading Title \n2: Too long \n3: Too Short \n4: different than usual content \n5: Bad morals shown \n6: Not funny \n7: None of the above \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
+            tempTagFloat = readLine()!!.toFloat()
+            tempTag = tempTagFloat.toInt()
+            while (!moveOn)
+                if (tempTag == 9) {
+                    moveOn = true
+                } else if (tempTag < 1 || tempTag > 9) {
+                    print("Please re enter a correct number: ")
+                    tempTagFloat = readLine()!!.toFloat()
+                    tempTag = tempTagFloat.toInt()
+                } else if (tempTag == 1)
+                    video.tags.add("Misleading Title")
+                else if (tempTag == 2)
+                    video.tags.add("Too long")
+                else if (tempTag == 3)
+                    video.tags.add("Too short")
+                else if (tempTag == 4)
+                    video.tags.add("different than usual content")
+                else if (tempTag == 5)
+                    video.tags.add("Bad morals shown")
+                else if (tempTag == 6)
+                    video.tags.add("Not funny")
+                else if (tempTag == 7)
+                    video.tags.add("None of the above")
+                else if (tempTag == 8) {
+                    print("Please enter tag: ")
+                    video.tags.add(readLine()!!)
+                }
+        }else if(video.starRating==3){
+            print("$toPrint\n1: Nothing special \n2: Average video \n3: Didn't make me feel anything \n4: Add my own tag \n5: Finish Step \nPlease enter your choice of number")
+            tempTagFloat = readLine()!!.toFloat()
+            tempTag = tempTagFloat.toInt()
+            while (!moveOn) {
+                if (tempTag == 5) {
+                    moveOn = true
+                } else if (tempTag < 1 || tempTag > 5) {
+                    print("Please re enter a correct number: ")
+                    tempTagFloat = readLine()!!.toFloat()
+                    tempTag = tempTagFloat.toInt()
+                } else if (tempTag == 1)
+                    video.tags.add("Nothing special")
+                else if (tempTag == 2)
+                    video.tags.add("Average video")
+                else if (tempTag == 3)
+                    video.tags.add("Didn't make me feel anything")
+                else if (tempTag == 4){
+                    print("Please enter tag: ")
+                    video.tags.add(readLine()!!)
+                }
+            }
+        }else{
+            print("$toPrint\n1: Relateable \n2: Funny \n3: Positive Content \n4: Inspirational \n5: Kind \n6: Informative \n7: Memorable \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
+            tempTagFloat = readLine()!!.toFloat()
+            tempTag = tempTagFloat.toInt()
+            while (!moveOn) {
+                if (tempTag == 9) {
+                    moveOn = true
+                } else if (tempTag < 1 || tempTag > 9) {
+                    print("Please re enter a correct number: ")
+                    tempTagFloat = readLine()!!.toFloat()
+                    tempTag = tempTagFloat.toInt()
+                } else if (tempTag == 1)
+                    video.tags.add("Relateable")
+                else if (tempTag == 2)
+                    video.tags.add("Funny")
+                else if (tempTag == 3)
+                    video.tags.add("Positive Content")
+                else if (tempTag == 4)
+                    video.tags.add("Inspirational")
+                else if (tempTag == 5)
+                    video.tags.add("Kind")
+                else if (tempTag == 6)
+                    video.tags.add("Informative")
+                else if (tempTag == 7)
+                    video.tags.add("Memorable")
+                else if (tempTag == 8){
+                    print("Please enter tag: ")
+                    video.tags.add(readLine()!!)
+                }
+            }
+        }
+
+        return video.channel.isNotEmpty() && video.videoTitle.isNotEmpty()
+    }
+
+    fun updateVideoData(video : VideoModel) : Boolean {
+
+        var tempChannel: String?
+        var tempVideoTitle: String?
+
+        if (video != null) {
+            print("Enter a new Channel for [ " + video.channel + " ] : ")
+            tempChannel = readLine()!!
+            print("Enter a new Video Title for [ " + video.videoTitle + " ] : ")
+            tempVideoTitle = readLine()!!
+
+            if (!tempChannel.isNullOrEmpty() && !tempVideoTitle.isNullOrEmpty()) {
+                video.channel = tempChannel
+                video.videoTitle = tempVideoTitle
+                return true
+            }
+        }
+        return false
+    }
+
+    fun getId() : Long {
+        var strId : String? // String to hold user input
+        var searchId : Long // Long to hold converted id
+        print("Enter id to Search/Update : ")
+        strId = readLine()!!
+        searchId = if (strId.toLongOrNull() != null && !strId.isEmpty())
+            strId.toLong()
+        else
+            -9
+        return searchId
+    }
+}
