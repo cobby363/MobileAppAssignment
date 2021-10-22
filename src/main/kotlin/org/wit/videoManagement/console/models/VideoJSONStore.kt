@@ -51,6 +51,8 @@ class VideoJSONStore : VideoStore {
         if (foundVideo != null) {
             foundVideo.channel = video.channel
             foundVideo.videoTitle = video.videoTitle
+            foundVideo.starRating = video.starRating
+            foundVideo.tags = video.tags
         }
         serialize()
     }
