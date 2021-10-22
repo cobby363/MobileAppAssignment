@@ -1,6 +1,5 @@
 package org.wit.videoManagement.console.views
 
-import VideoMemStore
 import org.wit.videoManagement.console.models.VideoJSONStore
 //import org.wit.videoManagement.console.models.VideoMemStore
 import org.wit.videoManagement.console.models.VideoModel
