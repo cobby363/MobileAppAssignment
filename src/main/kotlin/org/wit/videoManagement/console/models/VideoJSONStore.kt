@@ -23,6 +23,8 @@ fun generateRandomId(): Long {
 
 class VideoJSONStore : VideoStore {
 
+    val yellow = " \u001b[33m"
+
     var videos = mutableListOf<VideoModel>()
 
     init {
@@ -58,7 +60,7 @@ class VideoJSONStore : VideoStore {
     }
 
     internal fun logAll() {
-        videos.forEach { logger.info("${it}") }
+        videos.forEach { logger.info(yellow + "${it}") }
     }
 
     private fun serialize() {

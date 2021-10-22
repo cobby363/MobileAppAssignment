@@ -7,21 +7,26 @@ import java.lang.NumberFormatException
 
 class VideoView {
 
+    val blue = "\u001b[34m"
+    val cyan =  "\u001b[36m"
+    val yellow = " \u001b[33m"
+    val reset = "\u001b[0m"
+
     fun menu() : Int {
 
         var option : Int
         var input: String?
 
-        println("MAIN MENU")
+        println(reset + blue+"MAIN MENU")
         println(" 1. Add Video")
         println(" 2. Update Video")
         println(" 3. List All Videos")
         println(" 4. Search Videos")
         println(" 5. Delete Video")
         println(" 6. Search by Tag")
-        println("-1. Exit")
+        println("-1. Exit $reset")
         println()
-        print("Enter Option : ")
+        print(cyan+"Enter Option :  $reset")
         input = readLine()!!
         option = if (input.toIntOrNull() != null && !input.isEmpty())
             input.toInt()
@@ -68,7 +73,7 @@ class VideoView {
     fun addVideoData(video : VideoModel) : Boolean {
 
         println()
-        print("Enter a Channel Name : ")
+        print(yellow + "Enter a Channel Name : ")
         video.channel = readLine()!!
         print("Enter a Video Title : ")
         video.videoTitle = readLine()!!
@@ -92,7 +97,7 @@ class VideoView {
                 moveOn = true
         }
         video.starRating = tempStarRating
-        val toPrint = "Which of these tags would suit your opinion of this video?: "
+        val toPrint = "Which of these tags would suit your opinion of this video?: $reset"
         var tempTagFloat: Float
         var tempTag: Int
         moveOn = false
@@ -212,7 +217,7 @@ class VideoView {
         var tempTags: ArrayList<String> = arrayListOf()
 
         if (video != null) {
-            print("Enter a new Channel for [ " + video.channel + " ] : ")
+            print(yellow + "Enter a new Channel for [ " + video.channel + " ] : ")
             tempChannel = readLine()!!
             print("Enter a new Video Title for [ " + video.videoTitle + " ] : ")
             tempVideoTitle = readLine()!!
@@ -236,7 +241,7 @@ class VideoView {
                     moveOn = true
             }
 
-            val toPrint = "Which of these tags would suit your opinion of this video?: "
+            val toPrint = "Which of these tags would suit your opinion of this video?: $reset"
             var tempTagFloat: Float
             var tempTag: Int
             moveOn = false
@@ -359,7 +364,7 @@ class VideoView {
     fun getId() : Long {
         var strId : String? // String to hold user input
         var searchId : Long // Long to hold converted id
-        print("Enter id to Search/Update : ")
+        print(yellow + "Enter id to Search/Update : ")
         strId = readLine()!!
         searchId = if (strId.toLongOrNull() != null && !strId.isEmpty())
             strId.toLong()
