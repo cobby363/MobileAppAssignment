@@ -28,6 +28,7 @@ class VideoController {
                 3 -> list()
                 4 -> search()
                 5 -> delete()
+                6 -> searchByTags()
                 -99 -> dummyData()
                 -1 -> println("Exiting App")
                 else -> println("Invalid Option")
@@ -53,6 +54,10 @@ class VideoController {
 
     fun list() {
         videoView.listVideos(videos)
+    }
+
+    fun searchByTags(){
+        videoView.searchByTags(videos)
     }
 
     fun update() {
