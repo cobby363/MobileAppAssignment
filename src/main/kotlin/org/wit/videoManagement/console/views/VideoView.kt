@@ -4,6 +4,7 @@ import VideoMemStore
 import org.wit.videoManagement.console.models.VideoJSONStore
 //import org.wit.videoManagement.console.models.VideoMemStore
 import org.wit.videoManagement.console.models.VideoModel
+import java.lang.NumberFormatException
 
 class VideoView {
 
@@ -17,6 +18,8 @@ class VideoView {
         println(" 2. Update Video")
         println(" 3. List All Videos")
         println(" 4. Search Videos")
+        println(" 5. Delete Video")
+        println(" 6. Search by Tag")
         println("-1. Exit")
         println()
         print("Enter Option : ")
@@ -35,6 +38,27 @@ class VideoView {
         println()
     }
 
+    fun searchByTags(videos : VideoJSONStore){
+        if(videos.videos.size>0){
+            print("What tag would you like to search for?: ")
+            var tagToSearch = readLine()!!
+            var foundOne = false
+            for(i in 0 until videos.videos.size){
+                if(videos.videos[i].tags.size>0) {
+                    for (x in 0 until videos.videos[i].tags.size){
+                        if(tagToSearch == videos.videos[i].tags[x]) {
+                            foundOne = true
+                            println(videos.videos[i])
+                        }
+                    }
+                }
+            }
+            if(!foundOne)
+                print("Could not find any videos with this tag... Please try again!")
+        }else
+            print("Sorry there are no videos printed yet :(")
+    }
+
     fun showVideo(video : VideoModel) {
         if(video != null)
             println("Video Details [ $video ]")
@@ -50,13 +74,20 @@ class VideoView {
         print("Enter a Video Title : ")
         video.videoTitle = readLine()!!
         print("What star rating would you give this video (1-5 whole numbers)")
-        var tempStarRatingFloat = readLine()!!.toFloat()
+        var tempStarRatingFloat: Float
+        try {tempStarRatingFloat = readLine()!!.toFloat()} catch (e: NumberFormatException){
+            tempStarRatingFloat = 3f
+            print("You didn't enter a number.... Defaulting to rating of 3")
+        }
         var tempStarRating = tempStarRatingFloat.toInt()
         var moveOn = false
         while(!moveOn) {
             if (tempStarRating < 1 || tempStarRating > 5) {
                 print("Please enter a whole number between 1 and 5")
-                tempStarRatingFloat = readLine()!!.toFloat()
+                try {tempStarRatingFloat = readLine()!!.toFloat()} catch (e: NumberFormatException){
+                    tempStarRatingFloat = 3f
+                    print("You didn't enter a number.... Defaulting to rating of 3")
+                }
                 tempStarRating = tempStarRatingFloat.toInt()
             }else
                 moveOn = true
@@ -67,15 +98,25 @@ class VideoView {
         var tempTag: Int
         moveOn = false
         if(video.starRating==1 || video.starRating==2) {
-            print("$toPrint\n1: Misleading Title \n2: Too long \n3: Too Short \n4: different than usual content \n5: Bad morals shown \n6: Not funny \n7: None of the above \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
-            tempTagFloat = readLine()!!.toFloat()
-            tempTag = tempTagFloat.toInt()
-            while (!moveOn)
+
+            while (!moveOn) {
+                print("$toPrint\n1: Misleading Title \n2: Too long \n3: Too Short \n4: different than usual content \n5: Bad morals shown \n6: Not funny \n7: None of the above \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
+                try {
+                    tempTagFloat = readLine()!!.toFloat()
+                } catch (e: NumberFormatException) {
+                    tempTagFloat = 9f
+                }
+                tempTag = tempTagFloat.toInt()
+
                 if (tempTag == 9) {
                     moveOn = true
                 } else if (tempTag < 1 || tempTag > 9) {
                     print("Please re enter a correct number: ")
-                    tempTagFloat = readLine()!!.toFloat()
+                    try {
+                        tempTagFloat = readLine()!!.toFloat()
+                    } catch (e: NumberFormatException) {
+                        tempTagFloat = 9f
+                    }
                     tempTag = tempTagFloat.toInt()
                 } else if (tempTag == 1)
                     video.tags.add("Misleading Title")
@@ -95,16 +136,23 @@ class VideoView {
                     print("Please enter tag: ")
                     video.tags.add(readLine()!!)
                 }
+            }
         }else if(video.starRating==3){
-            print("$toPrint\n1: Nothing special \n2: Average video \n3: Didn't make me feel anything \n4: Add my own tag \n5: Finish Step \nPlease enter your choice of number")
-            tempTagFloat = readLine()!!.toFloat()
-            tempTag = tempTagFloat.toInt()
+
             while (!moveOn) {
+                print("$toPrint\n1: Nothing special \n2: Average video \n3: Didn't make me feel anything \n4: Add my own tag \n5: Finish Step \nPlease enter your choice of number")
+                try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                    tempTagFloat = 5f
+                }
+                tempTag = tempTagFloat.toInt()
+
                 if (tempTag == 5) {
                     moveOn = true
                 } else if (tempTag < 1 || tempTag > 5) {
                     print("Please re enter a correct number: ")
-                    tempTagFloat = readLine()!!.toFloat()
+                    try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                        tempTagFloat = 5f
+                    }
                     tempTag = tempTagFloat.toInt()
                 } else if (tempTag == 1)
                     video.tags.add("Nothing special")
@@ -118,15 +166,20 @@ class VideoView {
                 }
             }
         }else{
-            print("$toPrint\n1: Relateable \n2: Funny \n3: Positive Content \n4: Inspirational \n5: Kind \n6: Informative \n7: Memorable \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
-            tempTagFloat = readLine()!!.toFloat()
-            tempTag = tempTagFloat.toInt()
+
             while (!moveOn) {
+                print("$toPrint\n1: Relateable \n2: Funny \n3: Positive Content \n4: Inspirational \n5: Kind \n6: Informative \n7: Memorable \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
+                try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                    tempTagFloat = 9f
+                }
+                tempTag = tempTagFloat.toInt()
                 if (tempTag == 9) {
                     moveOn = true
                 } else if (tempTag < 1 || tempTag > 9) {
                     print("Please re enter a correct number: ")
-                    tempTagFloat = readLine()!!.toFloat()
+                    try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                        tempTagFloat = 9f
+                    }
                     tempTag = tempTagFloat.toInt()
                 } else if (tempTag == 1)
                     video.tags.add("Relateable")

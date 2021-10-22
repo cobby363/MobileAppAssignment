@@ -6,6 +6,7 @@ import org.wit.videoManagement.console.models.VideoJSONStore
 //import org.wit.videoManagement.console.models.VideoMemStore
 import org.wit.videoManagement.console.models.VideoModel
 import org.wit.videoManagement.console.views.VideoView
+import java.lang.NullPointerException
 
 private val logger = KotlinLogging.logger {}
 
@@ -13,6 +14,8 @@ private val logger = KotlinLogging.logger {}
 val videos = VideoJSONStore()
 val controller = VideoController()
 val videoView = VideoView()
+
+
 
 fun main(args: Array<String>) {
     logger.info { "Launching Video Console App" }
@@ -27,6 +30,8 @@ fun main(args: Array<String>) {
             2 -> updateVideo()
             3 -> videoView.listVideos(videos)
             4 -> searchVideo()
+            5 -> controller.delete()
+            6 -> videoView.searchByTags(videos)
             -99 -> dummyData()
             -1 -> println("Exiting App")
             else -> println("Invalid Option")
@@ -65,8 +70,12 @@ fun updateVideo() {
 }
 
 fun searchVideo() {
-    val aVideo = search(videoView.getId())!!
-    videoView.showVideo(aVideo)
+    videoView.listVideos(videos)
+   try{ val aVideo = search(videoView.getId())!!
+        videoView.showVideo(aVideo)}catch (e: NullPointerException) {
+
+       println("Video not found.... Please try another id")
+   }
 }
 
 

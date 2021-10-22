@@ -6,4 +6,6 @@ interface VideoStore {
     fun findOne(id: Long): VideoModel?
     fun create(video: VideoModel)
     fun update(video: VideoModel)
+    fun delete(video: VideoModel)
+    //fun searchByTag(video: VideoModel)
 }

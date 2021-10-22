@@ -27,6 +27,7 @@ class VideoController {
                 2 -> update()
                 3 -> list()
                 4 -> search()
+                5 -> delete()
                 -99 -> dummyData()
                 -1 -> println("Exiting App")
                 else -> println("Invalid Option")
@@ -82,6 +83,20 @@ class VideoController {
     fun search(id: Long) : VideoModel? {
         var foundVideo = videos.findOne(id)
         return foundVideo
+    }
+
+    fun delete() {
+        videoView.listVideos(videos)
+        var searchId = videoView.getId()
+        val aVideo = search(searchId)
+
+        if(aVideo != null) {
+            videos.delete(aVideo)
+            println("Video Deleted...")
+            videoView.listVideos(videos)
+        }
+        else
+            println("Video Not Deleted...")
     }
 
     fun dummyData() {

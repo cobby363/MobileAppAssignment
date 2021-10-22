@@ -68,4 +68,13 @@ class VideoJSONStore : VideoStore {
         val jsonString = read(JSON_FILE)
         videos = Gson().fromJson(jsonString, listType)
     }
+
+    override fun delete(video: VideoModel) {
+        videos.remove(video)
+        serialize()
+    }
+
+//    override fun searchByTag(video: VideoModel) {
+//        TODO("Not yet implemented")
+//    }
 }

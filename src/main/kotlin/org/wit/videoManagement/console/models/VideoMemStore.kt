@@ -39,4 +39,12 @@ class VideoMemStore : VideoStore {
     internal fun logAll() {
         videos.forEach { logger.info("${it}") }
     }
+
+    override fun delete(video: VideoModel) {
+        videos.remove(video)
+    }
+
+//    override fun searchByTag(video: VideoModel) {
+//        TODO("Not yet implemented")
+//    }
 }
