@@ -209,16 +209,148 @@ class VideoView {
 
         var tempChannel: String?
         var tempVideoTitle: String?
+        var tempStarRating: Int
+        var tempTags: ArrayList<String> = arrayListOf()
 
         if (video != null) {
             print("Enter a new Channel for [ " + video.channel + " ] : ")
             tempChannel = readLine()!!
             print("Enter a new Video Title for [ " + video.videoTitle + " ] : ")
             tempVideoTitle = readLine()!!
+            print("What new Star rating would you like to give for [ " +video.videoTitle+ "  - Previous rating: " + video.starRating + " ] : ")
+            var tempStarRatingFloat: Float
+            try {tempStarRatingFloat = readLine()!!.toFloat()} catch (e: NumberFormatException){
+                tempStarRatingFloat = 3f
+                print("You didn't enter a number.... Defaulting to rating of 3")
+            }
+            tempStarRating = tempStarRatingFloat.toInt()
+            var moveOn = false
+            while(!moveOn) {
+                if (tempStarRating < 1 || tempStarRating > 5) {
+                    print("Please enter a whole number between 1 and 5")
+                    try {tempStarRatingFloat = readLine()!!.toFloat()} catch (e: NumberFormatException){
+                        tempStarRatingFloat = 3f
+                        print("You didn't enter a number.... Defaulting to rating of 3")
+                    }
+                    tempStarRating = tempStarRatingFloat.toInt()
+                }else
+                    moveOn = true
+            }
+
+            val toPrint = "Which of these tags would suit your opinion of this video?: "
+            var tempTagFloat: Float
+            var tempTag: Int
+            moveOn = false
+            if(video.starRating==1 || video.starRating==2) {
+
+                while (!moveOn) {
+                    print("$toPrint\n1: Misleading Title \n2: Too long \n3: Too Short \n4: different than usual content \n5: Bad morals shown \n6: Not funny \n7: None of the above \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
+                    try {
+                        tempTagFloat = readLine()!!.toFloat()
+                    } catch (e: NumberFormatException) {
+                        tempTagFloat = 9f
+                    }
+                    tempTag = tempTagFloat.toInt()
+
+                    if (tempTag == 9) {
+                        moveOn = true
+                    } else if (tempTag < 1 || tempTag > 9) {
+                        print("Please re enter a correct number: ")
+                        try {
+                            tempTagFloat = readLine()!!.toFloat()
+                        } catch (e: NumberFormatException) {
+                            tempTagFloat = 9f
+                        }
+                        tempTag = tempTagFloat.toInt()
+                    } else if (tempTag == 1)
+                        tempTags.add("Misleading Title")
+                    else if (tempTag == 2)
+                        tempTags.add("Too long")
+                    else if (tempTag == 3)
+                        tempTags.add("Too short")
+                    else if (tempTag == 4)
+                        tempTags.add("different than usual content")
+                    else if (tempTag == 5)
+                        tempTags.add("Bad morals shown")
+                    else if (tempTag == 6)
+                        tempTags.add("Not funny")
+                    else if (tempTag == 7)
+                        tempTags.add("None of the above")
+                    else if (tempTag == 8) {
+                        print("Please enter tag: ")
+                        tempTags.add(readLine()!!)
+                    }
+                }
+            }else if(video.starRating==3){
+
+                while (!moveOn) {
+                    print("$toPrint\n1: Nothing special \n2: Average video \n3: Didn't make me feel anything \n4: Add my own tag \n5: Finish Step \nPlease enter your choice of number")
+                    try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                        tempTagFloat = 5f
+                    }
+                    tempTag = tempTagFloat.toInt()
+
+                    if (tempTag == 5) {
+                        moveOn = true
+                    } else if (tempTag < 1 || tempTag > 5) {
+                        print("Please re enter a correct number: ")
+                        try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                            tempTagFloat = 5f
+                        }
+                        tempTag = tempTagFloat.toInt()
+                    } else if (tempTag == 1)
+                        tempTags.add("Nothing special")
+                    else if (tempTag == 2)
+                        tempTags.add("Average video")
+                    else if (tempTag == 3)
+                        tempTags.add("Didn't make me feel anything")
+                    else if (tempTag == 4){
+                        print("Please enter tag: ")
+                        tempTags.add(readLine()!!)
+                    }
+                }
+            }else{
+
+                while (!moveOn) {
+                    print("$toPrint\n1: Relateable \n2: Funny \n3: Positive Content \n4: Inspirational \n5: Kind \n6: Informative \n7: Memorable \n8: Add my own tag \n9: Finish Step \nPlease enter your choice of number")
+                    try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                        tempTagFloat = 9f
+                    }
+                    tempTag = tempTagFloat.toInt()
+                    if (tempTag == 9) {
+                        moveOn = true
+                    } else if (tempTag < 1 || tempTag > 9) {
+                        print("Please re enter a correct number: ")
+                        try {tempTagFloat = readLine()!!.toFloat()}catch (e: NumberFormatException){
+                            tempTagFloat = 9f
+                        }
+                        tempTag = tempTagFloat.toInt()
+                    } else if (tempTag == 1)
+                        tempTags.add("Relateable")
+                    else if (tempTag == 2)
+                        tempTags.add("Funny")
+                    else if (tempTag == 3)
+                        tempTags.add("Positive Content")
+                    else if (tempTag == 4)
+                        tempTags.add("Inspirational")
+                    else if (tempTag == 5)
+                        tempTags.add("Kind")
+                    else if (tempTag == 6)
+                        tempTags.add("Informative")
+                    else if (tempTag == 7)
+                        tempTags.add("Memorable")
+                    else if (tempTag == 8){
+                        print("Please enter tag: ")
+                        tempTags.add(readLine()!!)
+                    }
+                }
+            }
 
             if (!tempChannel.isNullOrEmpty() && !tempVideoTitle.isNullOrEmpty()) {
                 video.channel = tempChannel
                 video.videoTitle = tempVideoTitle
+                video.starRating = tempStarRating
+                video.tags = tempTags
                 return true
             }
         }
